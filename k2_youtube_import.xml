@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.8" type="plugin" group="system" method="upgrade">
+	<name>PLG_SYSTEM_K2_YOUTUBE_IMPORT</name>
+	<author>Artem Pavluk</author>
+	<creationDate>October 2018</creationDate>
+	<copyright>© copyright 2010 - 2018 Private master Pavluk</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>info@art-pavluk.com</authorEmail>
+	<authorUrl>https://art-pavluk.com</authorUrl>
+	<version>1.0.0</version>
+	<description>PLG_SYSTEM_K2_YOUTUBE_IMPORT_DESCRIPTION</description>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_system_k2_youtube_import.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_k2_youtube_import.sys.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.plg_system_k2_youtube_import.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.plg_system_k2_youtube_import.sys.ini</language>
+	</languages>
+	<files>
+		<filename plugin="k2_youtube_import">k2_youtube_import.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="last_updated" type="text"
+					   label="PLG_SYSTEM_K2_YOUTUBE_IMPORT_LAST_UPDATED"
+					   class="readonly"
+					   readonly="true"/>
+				<field name="youtube_key" type="text"
+					   label="PLG_SYSTEM_K2_YOUTUBE_IMPORT_PARAMS_YOUTUBE_KEY"
+					   class="input-xxlarge"
+					   required="true"/>
+				<field name="youtube_channel" type="text"
+					   label="PLG_SYSTEM_K2_YOUTUBE_IMPORT_PARAMS_YOUTUBE_CHANNEL"
+					   class="input-xxlarge"
+					   required="true"/>
+				<field name="category_id" type="categories"
+					   label="PLG_SYSTEM_K2_YOUTUBE_IMPORT_PARAMS_CATEGORY_ID"
+					   required="true"
+					   addfieldpath="/administrator/components/com_k2/elements/"/>
+				<field name="author_id" type="user"
+					   label="PLG_SYSTEM_K2_YOUTUBE_IMPORT_PARAMS_AUTHOR_ID"
+					   required="true"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
