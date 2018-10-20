@@ -19,6 +19,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
 class plgSystemK2_youtube_import extends CMSPlugin
 {
@@ -32,27 +33,45 @@ class plgSystemK2_youtube_import extends CMSPlugin
 
 	public function onAjaxK2_youtube_import()
 	{
-		if ($total = $this->import())
+		$app    = Factory::getApplication();
+		$secret = $this->params->get('key');
+		$key    = $app->input->get('key', '', 'raw');
+		if ($key == $secret)
 		{
-			$app = Factory::getApplication();
-
-			// Update time last run
-			$this->lastUpdate();
-
-			// Redirect
-			$app->enqueueMessage(Text::plural('PLG_SYSTEM_K2_YOUTUBE_IMPORT_SUCCESS', $total));
-			$redirect = 'index.php?option=com_k2&view=items';
-			if ($app->isSite())
+			if ($total = $this->import())
 			{
-				JLoader::register('K2HelperRoute', JPATH_ROOT . '/components/com_k2/helpers/route.php');
-				$redirect = Route::_(K2HelperRoute::getCategoryRoute($this->params->get('category_id')));
+				// Update time last run
+				$this->lastUpdate();
+
+				// Redirect
+				$app->enqueueMessage(Text::plural('PLG_SYSTEM_K2_YOUTUBE_IMPORT_SUCCESS', $total));
+				$redirect = 'index.php?option=com_k2&view=items';
+				if ($app->isSite())
+				{
+					JLoader::register('K2HelperRoute', JPATH_ROOT . '/components/com_k2/helpers/route.php');
+					$redirect = Route::_(K2HelperRoute::getCategoryRoute($this->params->get('category_id')));
+				}
+
+				$app->redirect($redirect, true);
 			}
-
-			$app->redirect($redirect, true);
 		}
-
+		else
+		{
+			$app->redirect(Uri::base(), true);
+		}
 	}
 
+	/**
+	 * Import videos to K2.
+	 *
+	 * @param int    $limit
+	 * @param string $nextPage
+	 *
+	 * @return int
+	 *
+	 * @since 1.0.0
+	 * @throws Exception
+	 */
 	protected function import($limit = 50, $nextPage = null)
 	{
 		//Get videos ids
@@ -261,7 +280,8 @@ class plgSystemK2_youtube_import extends CMSPlugin
 				$toolbar = Toolbar::getInstance('toolbar');
 
 				// Add your custom button here
-				$url    = 'index.php?option=com_ajax&plugin=k2_youtube_import&group=system&format=raw';
+				$key    = $this->params->get('key');
+				$url    = 'index.php?option=com_ajax&plugin=k2_youtube_import&group=system&format=raw&key=' . $key;
 				$button = '<a href="' . $url . '" class="btn btn-small" target="_blank">'
 					. '<span class="icon-youtube text-error" aria-hidden="true"></span>'
 					. Text::_('PLG_SYSTEM_K2_YOUTUBE_IMPORT_BUTTON') . '</a>';

@@ -40,6 +40,9 @@
 				<field name="author_id" type="user"
 					   label="PLG_SYSTEM_K2_YOUTUBE_IMPORT_PARAMS_AUTHOR_ID"
 					   required="true"/>
+				<field name="key" type="text"
+					   label="PLG_SYSTEM_K2_YOUTUBE_IMPORT_KEY"
+					   required="true"/>
 			</fieldset>
 		</fields>
 	</config>
